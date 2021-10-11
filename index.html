@@ -6,10 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="./css/styles.css" />
-    <title>lol</title>
+    <title>Weather App</title>
   </head>
   <body>
-    <main></main>
+    <main>
+      <h1>The Weather App</h1>
+      <section class="search-container">
+        <input type="text" value="buenos aires" id="input-user" />
+        <button type="button" id="btn-submit">Buscar</button>
+      </section>
+      <section class="response-api">
+        <h2 class="country-name"></h2>
+        <h3 class="current-temp"></h3>
+        <ul class="info-weather">
+          <li class="item-weather weather"></li>
+          <li class="item-weather feels-like"></li>
+          <li class="item-weather min-temp"></li>
+          <li class="item-weather max-temp"></li>
+          <li class="item-weather temp"></li>
+        </ul>
+      </section>
+    </main>
 
     <script src="./js/main.js"></script>
   </body>
