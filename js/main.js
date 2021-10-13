@@ -21,16 +21,14 @@ fetch(url, headers)
 
 ============================================*/
 
-let inputUser = document.querySelector("#input-user").value;
-let countryName = document.querySelector(".country-name");
-let weather = document.querySelector(".weather");
-let currentTemp = document.querySelector(".current-temp");
-let feelsLike = document.querySelector(".feels-like");
-let minTemp = document.querySelector(".min-temp");
-let maxTemp = document.querySelector(".max-temp");
-let responseApi = document.querySelector(".response-api");
+let responseApiBasic = document.querySelector(".response-api-basic");
+let responseApiDetails = document.querySelector(".response-api-details");
 
-const city = inputUser;
+let btnSubmit = document
+  .querySelector("#btn-submit")
+  .addEventListener("click", getWeather);
+
+const city = document.getElementById("inputUser").value;
 const url = `https://community-open-weather-map.p.rapidapi.com/find?q=${city}&units=metric`;
 const headers = {
   method: "GET",
@@ -40,34 +38,40 @@ const headers = {
   },
 };
 
-fetch(url, headers)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data.list);
-    /*
-    console.log("Ciudad: " + data.list[0].name);
-    console.log("Temperatura Actual: " + data.list[0].main.temp);
-    console.log("Sensación Térmica: " + data.list[0].main.feels_like);
-    console.log("Temperatura Mínima: " + data.list[0].main.temp_min);
-    console.log("Temperatura Máxima: " + data.list[0].main.temp_max);
-    */
-    countryName.innerHTML = data.list[0].name;
-    currentTemp.innerHTML = data.list[0].main.temp + "°C";
-    weather.innerHTML =
-      "Clima actual: " +
-      data.list[0].weather[0].main +
-      " / " +
-      data.list[0].weather[1].main +
-      " / " +
-      data.list[0].weather[2].main;
-    feelsLike.innerHTML = "Sensación Térmica: " + data.list[0].main.feels_like;
-    minTemp.innerHTML = "Temperatura Mínima: " + data.list[0].main.temp_min;
-    maxTemp.innerHTML = "Temperatura Máxima: " + data.list[0].main.temp_max;
-  })
-  .catch((err) => console.error("Error: " + err));
+function getWeather() {
+  fetch(url, headers)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.list);
+      /*seccion basic*/
+      let countryName = document.createElement("h3");
+      countryName.innerText = data.list[0].name;
+      responseApiBasic.appendChild(countryName);
+      let currentTemp = document.createElement("h2");
+      currentTemp.innerText = data.list[0].main.temp + "°C";
+      responseApiBasic.appendChild(currentTemp);
+      let itemWeather = document.createElement("p");
+      itemWeather.innerHTML = data.list[0].weather[0].main;
+      console.log(data.list[0].weather.length);
+      responseApiBasic.appendChild(itemWeather);
 
-let nombresito = document
-  .createElement("h2")
-  .setAttribute("class", "country-name");
-let body = document.querySelector("body");
-body.appendChild("nombresito");
+      /*seccion details*/
+      let infoWeather = document.createElement("ul");
+      responseApiDetails.appendChild(infoWeather);
+      let feelsLike = document.createElement("li");
+      feelsLike.innerText = "Sensación: " + data.list[0].main.feels_like;
+      infoWeather.appendChild(feelsLike);
+      let minTemp = document.createElement("li");
+      minTemp.innerText = "Mínima: " + data.list[0].main.temp_min;
+      infoWeather.appendChild(minTemp);
+      let maxTemp = document.createElement("li");
+      maxTemp.innerText = "Máxima: " + data.list[0].main.temp_max;
+      infoWeather.appendChild(maxTemp);
+
+      /* for (i = 0; i < data.list[0].weather.length; i++) {
+        weather.innerHTML =
+          "Clima actual: " + data.list[0].weather[i].main + ". ";
+      } */
+    })
+    .catch((err) => console.error("Error: " + err));
+}
