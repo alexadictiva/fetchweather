@@ -28,8 +28,6 @@ let btnSubmit = document
   .querySelector("#btn-submit")
   .addEventListener("click", getWeather);
 
-const city = document.getElementById("inputUser").value;
-const url = `https://community-open-weather-map.p.rapidapi.com/find?q=${city}&units=metric`;
 const headers = {
   method: "GET",
   headers: {
@@ -39,10 +37,29 @@ const headers = {
 };
 
 function getWeather() {
+  let city = document.getElementById("inputUser").value;
+
+  let url = `https://community-open-weather-map.p.rapidapi.com/find?q=${city}&units=metric`;
   fetch(url, headers)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.list);
+      /*container */
+      let detailsContainer = document.querySelector(".details-container");
+      let container = document.createElement("article");
+      container.setAttribute("class", "details-content");
+      detailsContainer.appendChild(container);
+
+      let responseApiBasic = document.createElement("div");
+      responseApiBasic.setAttribute("class", "response-api-basic");
+      container.appendChild(responseApiBasic);
+
+      let responseApiDetails = document.createElement("div");
+      responseApiDetails.setAttribute("class", "response-api-details");
+      container.appendChild(responseApiDetails);
+
+      let hLine = document.createElement("hr");
+      container.appendChild(hLine);
+
       /*seccion basic*/
       let countryName = document.createElement("h3");
       countryName.innerText = data.list[0].name;
@@ -52,7 +69,6 @@ function getWeather() {
       responseApiBasic.appendChild(currentTemp);
       let itemWeather = document.createElement("p");
       itemWeather.innerHTML = data.list[0].weather[0].main;
-      console.log(data.list[0].weather.length);
       responseApiBasic.appendChild(itemWeather);
 
       /*seccion details*/
